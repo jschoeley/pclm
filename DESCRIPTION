@@ -1,0 +1,16 @@
+Package: pclm
+Type: Package
+Title: Penalized Composite Link Model applied to demographic data
+Version: 0.0.1
+Author: Silvia Rizzi and Marius Pascariu
+Maintainer: Marius Pascariu <mpascariu@outlook.com>
+Description: Penalized Composite Link Model applied to demographic data.
+License: GPL-3
+LazyData: TRUE
+Depends: R (>= 3.1.2)
+Imports:
+Suggests:
+  knitr,
+  rmarkdown
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
