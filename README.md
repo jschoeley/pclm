@@ -1,4 +1,4 @@
-# pclm R Package
+# pclm R Package - work in progress...
 
 This repository contains code for ungrouping binned demographic data using the penalized composite link methodology.
 
