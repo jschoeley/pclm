@@ -7,6 +7,7 @@
 #' 
 #' #' @import ...
 #' NULL
-#' #' @importFrom ... 
-#' NULL
-#' 
+#' @importFrom stats lsfit optimise
+NULL
+
+
