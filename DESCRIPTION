@@ -1,10 +1,10 @@
 Package: pclm
 Type: Package
-Title: Penalized Composite Link Model applied to demographic data
-Version: 0.0.2
+Title: Penalized Composite Link Model for efficient estimation of smooth distributions
+Version: 0.0.3
 Author: Marius Pascariu and Silvia Rizzi
 Maintainer: Marius Pascariu <mpascariu@outlook.com>
-Description: Penalized Composite Link Model applied to demographic data.
+Description: Penalized Composite Link Model for efficient estimation of smooth distributions.
 License: GPL-3
 LazyData: TRUE
 Depends: R (>= 3.1.2)

@@ -4,7 +4,7 @@
 \alias{objective_fun}
 \title{Objective function (to be optimised)}
 \usage{
-objective_fun(x, y, breaks, what = "aic")
+objective_fun(x, y, breaks, deg, what)
 }
 \description{
 Objective function (to be optimised)

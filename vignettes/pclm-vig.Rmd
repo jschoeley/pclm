@@ -1,7 +1,7 @@
 ---
 title: "pclm vignette"
 author: "Marius Pascariu and Silvia Rizzi"
-date: "3/29/2017"
+date: "May 5, 2017"
 output:
   pdf_document: default
   html_document: default
@@ -11,7 +11,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-So far the package has 3 elements: the pclm function, a generic plot function and HMD data hmddx for testing purposes. See below how it works.
+So far the package has 3 elements: the pclm function, a generic plot function and HMD data ($hmddx$) for testing purposes. See below how it works.
 
 ## 1. How to install the packages from Github
 
@@ -40,7 +40,7 @@ deaths <- hmddx[hmddx$country == country & hmddx$Year == year, ]
 
 # Aggregate them artificially in 5-years age classes with 85+ 
 # add last bin with 0 counts to complete the histogram
-breaks = c(seq(5,85,5),115,130)
+breaks = c(seq(0,85,5),115,130)
 deaths$Groups_Counts <- c(rep(1:17, each = 5), rep(18, 26))
 aggredate_dx <- aggregate(deaths$Total, FUN = "sum",
                  by = list(deaths$Groups_Counts))$x
@@ -50,8 +50,21 @@ aggredate_dx <-  c(aggredate_dx, 0)
 ### Fit model
 ```{r}
 # Fit model
-mod = pclm(y = aggredate_dx, breaks)
+mod = pclm(y = aggredate_dx, breaks, ci.level = 0.05)
+
+mod
 ```
+
+The function generates different types of output stored in the $mod$ object:
+```{r}
+ls(mod)
+```
+
+Fitted values together with 95% confidence intervals:
+```{r}
+head(fitted.values(mod))
+```
+
 
 ### Generic plot
 ```{r}

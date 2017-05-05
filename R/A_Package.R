@@ -3,11 +3,12 @@
 # #' @docType package
 # #' @name pclm
 # NULL
-# 
-#' 
-#' #' @import ...
-#' NULL
-#' @importFrom stats lsfit optimise
+
+
+# #' @import ...
+# #' NULL
+
+#' @importFrom stats lsfit optimise qnorm
 NULL
 
 

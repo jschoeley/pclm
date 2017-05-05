@@ -4,19 +4,31 @@
 \alias{pclm}
 \title{Fit Univariate Penalized Composite Link Model}
 \usage{
-pclm(y, breaks, lambda = NULL, deg = 2, show = FALSE)
+pclm(y, breaks, lambda = NULL, deg = 2, show = FALSE, ci.level = 0.05,
+  objective.fun = "AIC", opt.interval = c(0, 10^5))
 }
 \arguments{
 \item{y}{Vector of observed counts}
 
-\item{breaks}{Breaks}
+\item{breaks}{Breaks in the data set. For example: if we have 3 bins 
+\code{[0-5], (5-10] and (10-15]} the breaks will be defined as a vector 
+\code{c(0, 5, 10, 15)}}
 
 \item{lambda}{Smoothing parameter. If \code{lambda = NULL} (default) an 
 algorithm will find the optimal value.}
 
-\item{deg}{Order of differences of the components of b}
+\item{deg}{Order of differences of the components of b.}
 
-\item{show}{a logical value. Indicates whether iteration details should be shown}
+\item{show}{Logical value. Indicates whether iteration details should be shown or not.}
+
+\item{ci.level}{Level of significance for computing confidence intervals.}
+
+\item{objective.fun}{Objective function used in optimisation process.}
+
+\item{opt.interval}{Interval to be used in one-dimensional optimisation of lambda. 
+Default value: \code{c(0, 10^5)}.  
+Choose between \code{AIC} or \code{BIC}.
+Default value is set to 5\%.}
 }
 \value{
 A \code{pclm} object
@@ -37,15 +49,16 @@ deaths <- hmddx[hmddx$country == country & hmddx$Year == year, ]
 
 # Aggregate them artificially in 5-years age classes with 85+ 
 # add last bin with 0 counts to complete the histogram
-breaks = c(seq(5,85,5),115,130)
+breaks = c(seq(0, 85, by = 5), 115, 130)
 deaths$Groups_Counts <- c(rep(1:17, each = 5), rep(18, 26))
 aggredate_dx <- aggregate(deaths$Total, FUN = "sum",
                           by = list(deaths$Groups_Counts))$x
 aggredate_dx <-  c(aggredate_dx, 0)
 
-
 # Fit model
 mod = pclm(y = aggredate_dx, breaks)
+mod
+fitted.values(mod)
 
 # Generic plot
 plot(mod)
