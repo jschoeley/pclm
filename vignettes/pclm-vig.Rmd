@@ -1,7 +1,7 @@
 ---
 title: "pclm vignette"
 author: "Marius Pascariu and Silvia Rizzi"
-date: "May 5, 2017"
+date: "May 6, 2017"
 output:
   pdf_document: default
   html_document: default
@@ -32,11 +32,10 @@ devtools::install_github("mpascariu/pclm")
 library(pclm)
 
 # Select data
-country = "SWE"
 year    = 2014
 sex     = "Total"
 
-deaths <- hmddx[hmddx$country == country & hmddx$Year == year, ]
+deaths <- hmdDx[hmdDx$Year == year, ]
 
 # Aggregate them artificially in 5-years age classes with 85+ 
 # add last bin with 0 counts to complete the histogram
@@ -50,7 +49,7 @@ aggredate_dx <-  c(aggredate_dx, 0)
 ### Fit model
 ```{r}
 # Fit model
-mod = pclm(y = aggredate_dx, breaks, ci.level = 0.05)
+mod = pclm(dta = aggredate_dx, breaks, ci.level = 0.05)
 
 mod
 ```
@@ -71,6 +70,6 @@ head(fitted.values(mod))
 # Generic plot
 plot(mod)
 # Add real data on top
-lines(0:110, deaths$Total, type = "o", col = "blue") 
+lines(0:110, deaths$Total, type = "o", col = "black") 
 ```
 

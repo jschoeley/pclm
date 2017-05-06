@@ -4,34 +4,37 @@
 \alias{pclm}
 \title{Fit Univariate Penalized Composite Link Model}
 \usage{
-pclm(y, breaks, lambda = NULL, deg = 2, show = FALSE, ci.level = 0.05,
-  objective.fun = "AIC", opt.interval = c(0, 10^5))
+pclm(dta, breaks, offset = NULL, lambda = NULL, deg = 2, show = FALSE,
+  ci.level = 0.05, objective.fun = "AIC", opt.interval = c(0, 10^5))
 }
 \arguments{
-\item{y}{Vector of observed counts}
+\item{dta}{Vector of observed counts}
 
 \item{breaks}{Breaks in the data set. For example: if we have 3 bins 
-\code{[0-5], (5-10] and (10-15]} the breaks will be defined as a vector 
-\code{c(0, 5, 10, 15)}}
+\code{[0-5), [5-10) and [10-15]} the breaks will be defined as a vector 
+\code{c(0, 5, 10, 16)}}
+
+\item{offset}{Offset term.}
 
 \item{lambda}{Smoothing parameter. If \code{lambda = NULL} (default) an 
 algorithm will find the optimal value.}
 
 \item{deg}{Order of differences of the components of b.}
 
-\item{show}{Logical value. Indicates whether iteration details should be shown or not.}
+\item{show}{Logical value. Indicates whether iteration details should be shown or not.
+Default: \code{FALSE}.}
 
-\item{ci.level}{Level of significance for computing confidence intervals.}
+\item{ci.level}{Level of significance for computing confidence intervals. 
+Default: \code{0.05}.}
 
-\item{objective.fun}{Objective function used in optimisation process.}
+\item{objective.fun}{Objective function used in optimisation process.
+Choose between \code{AIC} or \code{BIC}. Default: \code{AIC}}
 
 \item{opt.interval}{Interval to be used in one-dimensional optimisation of lambda. 
-Default value: \code{c(0, 10^5)}.  
-Choose between \code{AIC} or \code{BIC}.
-Default value is set to 5\%.}
+Default: \code{c(0, 10^5)}.}
 }
 \value{
-A \code{pclm} object
+A \code{pclm} object.
 }
 \description{
 Fit Univariate Penalized Composite Link Model
@@ -41,11 +44,10 @@ Fit Univariate Penalized Composite Link Model
 library(pclm)
 
 # Select data
-country = "SWE"
-year    = 2014
-sex     = "Total"
+year = 2014
+sex  = "Total"
 
-deaths <- hmddx[hmddx$country == country & hmddx$Year == year, ]
+deaths <- hmdDx[hmdDx$Year == year, ]
 
 # Aggregate them artificially in 5-years age classes with 85+ 
 # add last bin with 0 counts to complete the histogram
@@ -56,7 +58,7 @@ aggredate_dx <- aggregate(deaths$Total, FUN = "sum",
 aggredate_dx <-  c(aggredate_dx, 0)
 
 # Fit model
-mod = pclm(y = aggredate_dx, breaks)
+mod = pclm(aggredate_dx, breaks)
 mod
 fitted.values(mod)
 
@@ -65,4 +67,7 @@ plot(mod)
 # Add real data on top
 lines(0:110, deaths$Total, type = "o", col = "blue") 
 
+}
+\seealso{
+\code{\link{pclm_mx}}
 }

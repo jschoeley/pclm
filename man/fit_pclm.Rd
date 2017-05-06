@@ -4,7 +4,8 @@
 \alias{fit_pclm}
 \title{Fit univariate pclm}
 \usage{
-fit_pclm(y, breaks, lambda, deg, show = FALSE, ci.level = 0.05)
+fit_pclm(dta, breaks, offset = NULL, lambda = 100, deg = 2,
+  show = FALSE, ci.level = 0.05, iter = 50, tol = 1e-06)
 }
 \description{
 Fit univariate pclm
