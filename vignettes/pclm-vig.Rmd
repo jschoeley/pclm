@@ -2,9 +2,11 @@
 title: "pclm vignette"
 author: "Marius Pascariu and Silvia Rizzi"
 date: "May 6, 2017"
-output:
-  pdf_document: default
-  html_document: default
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette --- MortalityLaws R package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -66,7 +68,7 @@ head(fitted.values(mod))
 
 
 ### Generic plot
-```{r}
+```{r fig.height=6, fig.width=7}
 # Generic plot
 plot(mod)
 # Add real data on top
