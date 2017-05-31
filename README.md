@@ -1,4 +1,6 @@
 # pclm R Package - work in progress...
+[![Build Status](https://travis-ci.org/mpascariu/pclm.svg?branch=master)](https://travis-ci.org/mpascariu/MortalityLaws)
+[![license](https://img.shields.io/github/license/mpascariu/pclm.svg)]()
 
 This repository contains code for estimating smooth distributions using the penalized composite link methodology. Examples applied to demographic data are provided.
 

@@ -3,3 +3,4 @@
 ^data-raw$
 ^LICENSE$
 ^.git$
+^\.travis\.yml$
