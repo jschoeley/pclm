@@ -17,7 +17,7 @@ plot.pclm <- function(x, ...) {
     
     plot(Age, fitted.values$value, type = "n", axes = FALSE,
          ylab = '', xlab = '', log = log_scale, ylim = y_lim,
-         main = 'Observed vs. Estimated data')
+         main = 'Observed vs. Estimated data', ...)
     axis(1); axis(2)
     # histogram
     if (logic1) {
@@ -33,7 +33,7 @@ plot.pclm <- function(x, ...) {
     polygon(x = c(rev(Age), Age), 
             y = c(rev(fitted.values$lower.bound), 
                   fitted.values$upper.bound),
-            col = "#fcc5c0", border = "red")
+            col = rgb(1, 0, 0, alpha = 0.1), border = "red")
     # Fitted line
     lines(Age, fitted.values$value, lwd = 2, col = "#0c2c84")
     legend('topleft', legend = c('Fitted Values', 'Conf.Intervals'), 

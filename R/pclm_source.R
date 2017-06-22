@@ -46,7 +46,9 @@
 #' # Add real data on top
 #' lines(0:110, deaths$Total, type = "o", col = "blue") 
 #' 
+#' @importFrom stats lsfit optimise qnorm
 #' @export
+#' 
 pclm <- function(dta, breaks, offset = NULL, lambda = NULL, deg = 2, 
                  show = FALSE, ci.level = 0.05,
                  objective.fun = 'AIC', opt.interval = c(0, 10^5)){
@@ -81,19 +83,19 @@ objective_fun <- function(x, dta, breaks, offset, deg, what) {
 #' Fit univariate pclm 
 #' 
 #' @keywords internal
-fit_pclm <- function(dta, breaks, offset = NULL, lambda = 100, deg = 2,
+fit_pclm <- function(dta, breaks, offset = NULL, lambda, deg = 2,
                      show = FALSE, ci.level = 0.05, 
                      iter = 50, tol = 1e-6){
   input <- c(as.list(environment())) # save all the input for later use
   
   breaksR = breaks[-1]
   breaksL = rev(rev(breaks)[-1]) + 1
-  m = rev(breaks)[1]
+  m = max(breaks) - min(breaks)
   X = diag(m)
   
+  # Build C matrix
   C = matrix(0, nrow = length(dta), ncol = m)
-  for (i in 1:length(dta)) C[i, breaksL[i]:breaksR[i]] = 1
-  
+  for (j in 1:length(dta)) C[j, breaksL[j]:breaksR[j] - min(breaks)] = 1
   if (!is.null(offset)) C <- C %*% diag(c(offset))
   
   # Some preparations

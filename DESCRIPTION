@@ -1,7 +1,7 @@
 Package: pclm
 Type: Package
 Title: Penalized Composite Link Model for efficient estimation of smooth distributions
-Version: 0.0.4
+Version: 0.0.5
 Author: Marius Pascariu and Silvia Rizzi
 Maintainer: Marius Pascariu <mpascariu@outlook.com>
 Description: Penalized Composite Link Model for efficient estimation of smooth distributions.
