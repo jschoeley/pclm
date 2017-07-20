@@ -4,8 +4,8 @@
 \alias{pclm}
 \title{Fit Univariate Penalized Composite Link Model}
 \usage{
-pclm(dta, breaks, offset = NULL, lambda = NULL, deg = 2, show = FALSE,
-  ci.level = 0.05, objective.fun = "AIC", opt.interval = c(0, 10^5))
+pclm(dta, breaks, offset = NULL, lambda = NULL, show = FALSE,
+  ci.level = 0.05, objective.fun = "AIC", opt.interval = c(0, 10^5), ...)
 }
 \arguments{
 \item{dta}{Vector of observed counts}
@@ -19,8 +19,6 @@ pclm(dta, breaks, offset = NULL, lambda = NULL, deg = 2, show = FALSE,
 \item{lambda}{Smoothing parameter. If \code{lambda = NULL} (default) an 
 algorithm will find the optimal value.}
 
-\item{deg}{Order of differences of the components of b.}
-
 \item{show}{Logical value. Indicates whether iteration details should be shown or not.
 Default: \code{FALSE}.}
 
@@ -32,6 +30,8 @@ Choose between \code{AIC} or \code{BIC}. Default: \code{AIC}}
 
 \item{opt.interval}{Interval to be used in one-dimensional optimisation of lambda. 
 Default: \code{c(0, 10^5)}.}
+
+\item{...}{Other parameters to pe passed in \code{fit_pclm} internal function.}
 }
 \value{
 A \code{pclm} object.

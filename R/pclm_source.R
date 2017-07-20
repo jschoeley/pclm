@@ -8,7 +8,6 @@
 #' @param offset Offset term.
 #' @param lambda Smoothing parameter. If \code{lambda = NULL} (default) an 
 #' algorithm will find the optimal value.
-#' @param deg Order of differences of the components of b.
 #' @param show Logical value. Indicates whether iteration details should be shown or not.
 #' Default: \code{FALSE}.
 #' @param ci.level Level of significance for computing confidence intervals. 
@@ -16,7 +15,8 @@
 #' @param objective.fun Objective function used in optimisation process.
 #' Choose between \code{AIC} or \code{BIC}. Default: \code{AIC}
 #' @param opt.interval Interval to be used in one-dimensional optimisation of lambda. 
-#' Default: \code{c(0, 10^5)}.  
+#' Default: \code{c(0, 10^5)}.
+#' @param ... Other parameters to pe passed in \code{fit_pclm} internal function.
 #' @return A \code{pclm} object.
 #' @seealso \code{\link{pclm_mx}}
 #' @examples  
@@ -49,9 +49,9 @@
 #' @importFrom stats lsfit optimise qnorm
 #' @export
 #' 
-pclm <- function(dta, breaks, offset = NULL, lambda = NULL, deg = 2, 
+pclm <- function(dta, breaks, offset = NULL, lambda = NULL, 
                  show = FALSE, ci.level = 0.05,
-                 objective.fun = 'AIC', opt.interval = c(0, 10^5)){
+                 objective.fun = 'AIC', opt.interval = c(0, 10^5), ...){
   
   if (is.null(lambda)) {
   # Find lambda if NULL
@@ -59,13 +59,12 @@ pclm <- function(dta, breaks, offset = NULL, lambda = NULL, deg = 2,
                     dta = dta, 
                     breaks = breaks,
                     offset = offset,
-                    deg = deg, 
                     what = objective.fun, 
                     interval = opt.interval)
     lambda <- opt$minimum
   }
   # solve the PCLM 
-  mdl <- fit_pclm(dta, breaks, offset, lambda, deg, show, ci.level)
+  mdl <- fit_pclm(dta, breaks, offset, lambda, show, ci.level)
   out <- structure(class = "pclm", mdl)
   return(out)  
 }
@@ -74,8 +73,8 @@ pclm <- function(dta, breaks, offset = NULL, lambda = NULL, deg = 2,
 #' Objective function (to be optimised)
 #' @keywords internal
 #' 
-objective_fun <- function(x, dta, breaks, offset, deg, what) {
-  fit <- fit_pclm(dta, breaks, offset, lambda = x, deg)
+objective_fun <- function(x, dta, breaks, offset, what) {
+  fit <- fit_pclm(dta, breaks, offset, lambda = x)
   if (what == 'AIC') out = fit$goodness.of.fit$AIC else out = fit$goodness.of.fit$BIC
   return(out)
 }
@@ -83,9 +82,9 @@ objective_fun <- function(x, dta, breaks, offset, deg, what) {
 #' Fit univariate pclm 
 #' 
 #' @keywords internal
-fit_pclm <- function(dta, breaks, offset = NULL, lambda, deg = 2,
-                     show = FALSE, ci.level = 0.05, 
-                     iter = 50, tol = 1e-6){
+fit_pclm <- function(dta, breaks, offset = NULL, lambda, 
+                     show = FALSE, ci.level = 0.05,
+                     deg = 2, iter = 50, tol = 1e-6){
   input <- c(as.list(environment())) # save all the input for later use
   
   breaksR = breaks[-1]
@@ -101,8 +100,8 @@ fit_pclm <- function(dta, breaks, offset = NULL, lambda, deg = 2,
   # Some preparations
   nx <- dim(X)[2]
   D  <- diff(diag(nx), diff = deg)
-  bstart <- log(sum(dta) / nx);
-  b  <- rep(bstart, nx);
+  bstart <- log(sum(dta) / nx)
+  b  <- rep(bstart, nx)
   
   # Perform the iterations
   for (it in 1:iter) {

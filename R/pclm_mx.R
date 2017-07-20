@@ -54,20 +54,20 @@
 #' points(mx_observed)
 #' 
 #' @export
-pclm_mx <- function(dta, offset, breaks, lambda = NULL, deg = 2, 
+pclm_mx <- function(dta, offset, breaks, lambda = NULL, 
                     show = FALSE, ci.level = 0.05,
                     objective.fun = 'AIC', opt.interval = c(0, 10^5)){
   
   mdl_Dx = pclm(dta = dta, breaks, offset = NULL, 
-                lambda, deg, show, ci.level, 
+                lambda, show, ci.level,
                 objective.fun, opt.interval)
   
   mdl_Ex = pclm(dta = offset, breaks, offset = NULL, 
-                lambda, deg, show, ci.level,
+                lambda, show, ci.level,
                 objective.fun, opt.interval)
   
   mdl_mx = pclm(dta = dta, breaks, offset = mdl_Ex$fitted.values$value, 
-                lambda, deg, show, ci.level,
+                lambda, show, ci.level,
                 objective.fun, opt.interval)
   
   out <- list(pclm_dta = mdl_Dx, pclm_offset = mdl_Ex, pclm_mx = mdl_mx)
