@@ -3,17 +3,17 @@
 #' @export
 plot.pclm <- function(x, ...) {
   with(x, {
-    logic1 <- is.null(input$offset)
-    breaksR = input$breaks[-1]
-    breaksL = rev(rev(input$breaks)[-1]) + 1
-    n = length(breaksR)
-    leng = breaksR - breaksL + 1
-    hist = input$dta / leng
-    Age  = min(breaksL):max(breaksR) - 1
+    logic1  <- is.null(input$offset)
+    breaksR <- input$breaks[-1]
+    breaksL <- rev(rev(input$breaks)[-1]) + 1
+    n       <- length(breaksR)
+    leng    <- breaksR - breaksL + 1
+    hist    <- input$dta / leng
+    Age     <- min(breaksL):max(breaksR) - 1
     # estimated distribution
-    log_scale = if (!logic1) 'y' else ''
-    y_lim = c(min(fitted.values), 
-              min(max(fitted.values$value*2), max(fitted.values)))
+    log_scale <- if (!logic1) 'y' else ''
+    y_lim     <- c(min(fitted.values), 
+                   min(max(fitted.values$value*2), max(fitted.values)))
     
     plot(Age, fitted.values$value, type = "n", axes = FALSE,
          ylab = '', xlab = '', log = log_scale, ylim = y_lim,

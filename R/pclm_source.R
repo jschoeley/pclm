@@ -116,38 +116,37 @@ fit_pclm <- function(dta, breaks, offset = NULL, lambda, deg = 2,
     z   <- c(dta - mu + Q %*% b, rep(0, nx - deg))
     Fit <- lsfit(rbind(Q, D), z, wt = w, intercept = F) 
     b   <- Fit$coef
+    db  <- max(abs(b - b0))
     
-    db <- max(abs(b - b0))
     if (show)  cat(it, " ", db, "\n")
     if (db < tol) break
   }
   
   # Regression diagnostics
-  R  <- t(Q) %*% diag(c(1 / mu)) %*% Q
-  H  <- solve(R + lambda * t(D) %*% D, R)
-  H0 <- solve(R + lambda * t(D) %*% D) # variance-covariance matrix Bayesian approach
-  H1 <- H0 %*% R %*% H0 # variance-covaraince matrix sandwitch estimator
+  R    <- t(Q) %*% diag(c(1 / mu)) %*% Q
+  H    <- solve(R + lambda * t(D) %*% D, R)
+  H0   <- solve(R + lambda * t(D) %*% D) # variance-covariance matrix Bayesian approach
+  H1   <- H0 %*% R %*% H0 # variance-covaraince matrix sandwitch estimator
   vcov <- list(vcov_bayesian = H0, vcov_sandwitch = H1)
   
   trace <- sum(diag(H))
-  ok  <- dta > 0
-  dev <- 2 * sum(dta[ok] * log(dta[ok] / mu[ok]))
-  aic <- dev + 2 * trace
-  bic <- dev + log(length(dta)) * trace
+  ok    <- dta > 0
+  dev   <- 2 * sum(dta[ok] * log(dta[ok] / mu[ok]))
+  aic   <- dev + 2 * trace
+  bic   <- dev + log(length(dta)) * trace
   # standard errors using sandwitch estimator 
   # (use alternatively H0 for Bayesian approach)
-  s.e. = sqrt(diag(H1))
-  gof <- list(AIC = aic, BIC = bic, deviance = dev, standard.errors = s.e.)
+  s.e. <- sqrt(diag(H1))
+  gof  <- list(AIC = aic, BIC = bic, deviance = dev, standard.errors = s.e.)
   
   # confidence intervals 5%
-  qn = qnorm(1 - ci.level/2)
-  lower = exp(eta - qn*s.e.)
-  upper = exp(eta + qn*s.e.)
+  qn    <- qnorm(1 - ci.level/2)
+  lower <- exp(eta - qn*s.e.)
+  upper <- exp(eta + qn*s.e.)
+  fit   <- data.frame(value = gam, lower.bound = lower, upper.bound = upper)
   
-  fit <- data.frame(value = gam, lower.bound = lower, upper.bound = upper)
-  
-  out <- list(input = input, fitted.values = fit, mu = mu, vcov = vcov, 
-              trace = trace, goodness.of.fit = gof, lambda = lambda)
+  out <- list(input = input, fitted.values = fit, 
+              goodness.of.fit = gof, lambda = lambda)
   return(out)
 }
 
